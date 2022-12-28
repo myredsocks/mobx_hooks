@@ -37,7 +37,7 @@ void main() {
   testWidgets('useComputed compute value from', (tester) async {
     final firstName = Observable('Serena');
     final lastName = Observable('Williams');
-    Computed<String> fullName;
+    Computed<String>? fullName;
     var buildCount = 0;
 
     await tester.pumpWidget(ObserverHookBuilder(
@@ -51,7 +51,7 @@ void main() {
     ));
     expect(firstName.value, 'Serena');
     expect(lastName.value, 'Williams');
-    expect(fullName.value, 'Serena Williams');
+    expect(fullName!.value, 'Serena Williams');
 
     runInAction(() {
       firstName.value = 'Venus';
@@ -60,20 +60,20 @@ void main() {
     await tester.pump();
     expect(firstName.value, 'Venus');
     expect(lastName.value, 'Williams');
-    expect(fullName.value, 'Venus Williams');
+    expect(fullName!.value, 'Venus Williams');
     // Make sure the change doesnt trigger rebuild
     expect(buildCount, 1);
   });
 
-  testWidgets('useComputed raise error when compute function is null',
-      (tester) async {
-    // Use HookBuilder because we don't have any Observables
-    await tester.pumpWidget(HookBuilder(
-      builder: (context) {
-        useComputed<String>(null);
-        return Container();
-      },
-    ));
-    expect(tester.takeException(), isAssertionError);
-  });
+  // testWidgets('useComputed raise error when compute function is null',
+  //     (tester) async {
+  //   // Use HookBuilder because we don't have any Observables
+  //   await tester.pumpWidget(HookBuilder(
+  //     builder: (context) {
+  //       useComputed<String>(() => '');
+  //       return Container();
+  //     },
+  //   ));
+  //   expect(tester.takeException(), isAssertionError);
+  // });
 }

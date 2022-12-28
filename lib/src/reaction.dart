@@ -23,14 +23,12 @@ typedef ReactionEffect<T> = void Function(T);
 /// }
 /// ```
 void useReaction<T>(ReactionFunction<T> fn, ReactionEffect<T> effect,
-        [List<Object> keys]) =>
+        [List<Object>? keys]) =>
     use(_ReactionHook<T>(fn, effect, keys));
 
 class _ReactionHook<T> extends Hook<void> {
-  const _ReactionHook(this.fn, this.effect, [List<Object> keys])
-      : assert(fn != null, 'reaction function cannot be null'),
-        assert(effect != null, 'effect function cannot be null'),
-        super(keys: keys);
+  const _ReactionHook(this.fn, this.effect, [List<Object>? keys])
+      : super(keys: keys);
 
   final ReactionFunction<T> fn;
   final ReactionEffect<T> effect;
@@ -40,7 +38,7 @@ class _ReactionHook<T> extends Hook<void> {
 }
 
 class _ReactionHookState<T> extends HookState<void, _ReactionHook<T>> {
-  ReactionDisposer disposer;
+  ReactionDisposer? disposer;
 
   @override
   void build(BuildContext context) {}
@@ -58,7 +56,7 @@ class _ReactionHookState<T> extends HookState<void, _ReactionHook<T>> {
   @override
   void dispose() {
     if (disposer != null) {
-      disposer();
+      disposer!();
     }
   }
 

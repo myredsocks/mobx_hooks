@@ -23,11 +23,11 @@ bool debugAddStackTraceInObserverNameForObserverHooksBuilder = true;
 abstract class ObserverHookWidget extends StatelessWidget
     with ObserverWidgetMixin {
   /// Initializes [key] for subclasses.
-  const ObserverHookWidget({Key key, String name})
+  const ObserverHookWidget({Key? key, String? name})
       : _name = name,
         super(key: key);
 
-  final String _name;
+  final String? _name;
 
   @override
   _StatelessObserverHookElement createElement() =>
@@ -54,7 +54,7 @@ class _StatelessObserverHookElement extends StatelessElement
 abstract class StatefulObserverHookWidget extends StatefulWidget
     with ObserverWidgetMixin {
   /// Initializes [key] for subclasses.
-  const StatefulObserverHookWidget({Key key}) : super(key: key);
+  const StatefulObserverHookWidget({Key? key}) : super(key: key);
 
   @override
   _StatefulObserverHookElement createElement() =>
@@ -75,10 +75,9 @@ class ObserverHookBuilder extends ObserverHookWidget {
   ///
   /// The [builder] argument must not be null.
   ObserverHookBuilder({
-    @required this.builder,
-    Key key,
-  })  : assert(builder != null, '`builder` cannot be null'),
-        debugConstructingStackFrame = debugFindConstructingStackFrame(),
+    required this.builder,
+    Key? key,
+  })  : debugConstructingStackFrame = debugFindConstructingStackFrame(),
         super(key: key);
 
   /// The callback used by [ObserverHookBuilder] to create a widget.
@@ -88,7 +87,7 @@ class ObserverHookBuilder extends ObserverHookWidget {
   final Widget Function(BuildContext context) builder;
 
   /// The stack frame pointing to the source that constructed this instance.
-  final String debugConstructingStackFrame;
+  final String? debugConstructingStackFrame;
 
   @override
   Widget build(BuildContext context) => builder(context);
@@ -104,8 +103,8 @@ class ObserverHookBuilder extends ObserverHookWidget {
 
   @visibleForTesting
   // ignore: public_member_api_docs
-  static String debugFindConstructingStackFrame([StackTrace stackTrace]) {
-    String stackFrame;
+  static String? debugFindConstructingStackFrame([StackTrace? stackTrace]) {
+    String? stackFrame;
 
     // ignore: prefer_asserts_with_message
     assert(() {
@@ -121,9 +120,12 @@ class ObserverHookBuilder extends ObserverHookWidget {
             // an Observer subclass' constructor (which we skip past with the
             // regex)
             .skip(3)
+            .cast<String?>()
             // Search for the first non-constructor frame
             .firstWhere(
-                (frame) => !_constructorStackFramePattern.hasMatch(frame),
+                (frame) =>
+                    frame != null &&
+                    !_constructorStackFramePattern.hasMatch(frame),
                 orElse: () => null);
       }
       return true;

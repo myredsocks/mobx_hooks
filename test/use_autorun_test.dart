@@ -45,28 +45,28 @@ void main() {
     expect(counter.value, 1);
   });
 
-  testWidgets('HookObserverWidget will fail when useAutorun is null',
-      (tester) async {
-    Object exception;
-    final prevOnError = FlutterError.onError;
-    FlutterError.onError = (details) => exception = details.exception;
-    try {
-      await tester.pumpWidget(ObserverHookBuilder(builder: (c) {
-        useAutorun(null);
-        return const SizedBox();
-      }));
-    } finally {
-      FlutterError.onError = prevOnError;
-    }
-    // Assertion error caught by MobXException and builder method returns null
-    expect(exception, isInstanceOf<FlutterError>());
-    expect((exception as FlutterError).stackTrace, isNotNull);
-  });
+  // testWidgets('HookObserverWidget will fail when useAutorun is null',
+  //     (tester) async {
+  //   Object? exception;
+  //   final prevOnError = FlutterError.onError;
+  //   FlutterError.onError = (details) => exception = details.exception;
+  //   try {
+  //     await tester.pumpWidget(ObserverHookBuilder(builder: (c) {
+  //       useAutorun(() {});
+  //       return const SizedBox();
+  //     }));
+  //   } finally {
+  //     FlutterError.onError = prevOnError;
+  //   }
+  //   // Assertion error caught by MobXException and builder method returns null
+  //   expect(exception, isInstanceOf<FlutterError>());
+  //   expect((exception as FlutterError).stackTrace, isNotNull);
+  // });
 
   testWidgets('autorun is immediately called', (tester) async {
     final autorunned = MockAutorun();
     final unrelated = MockWidgetBuild();
-    List<Object> parameters;
+    List<Object>? parameters;
 
     Widget builder() {
       return ObserverHookBuilder(builder: (context) {

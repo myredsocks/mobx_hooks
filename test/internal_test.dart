@@ -1,16 +1,14 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobx_hooks/src/internal.dart';
 import 'package:mobx/mobx.dart';
-
 import 'package:mobx_hooks/mobx_hooks.dart';
+import 'package:mobx_hooks/src/internal.dart';
 
 class InitialHookWidget extends ObserverHookWidget {
-  const InitialHookWidget(this.observable, {Key key, this.name})
+  const InitialHookWidget(this.observable, {Key? key, this.name})
       : super(key: key, name: name);
-  final String name;
+  final String? name;
   final Observable observable;
   @override
   Widget build(BuildContext context) {
@@ -23,7 +21,8 @@ class InitialHookWidget extends ObserverHookWidget {
 }
 
 class InitialHookStatefulWidget extends StatefulObserverHookWidget {
-  const InitialHookStatefulWidget(this.observable, {Key key}) : super(key: key);
+  const InitialHookStatefulWidget(this.observable, {Key? key})
+      : super(key: key);
 
   final Observable observable;
 
@@ -102,13 +101,14 @@ void main() {
     final widget = tester.widget(find.byType(InitialHookStatefulWidget))
         as ObserverWidgetMixin;
 
-    expect(widget != null, true);
     expect(widget.getName(), 'initial');
   });
 
-  testWidgets('ObserverHookWidget should throw exception when builder is null',
-      (tester) async {
-    expect(() => ObserverHookBuilder(builder: null),
-        throwsA(isInstanceOf<AssertionError>()));
-  });
+  // testWidgets('ObserverHookWidget should throw exception when builder is null',
+  //     (tester) async {
+  //   final widgetBuilder = ObserverHookBuilder(builder: (_) {
+  //     return const SizedBox.shrink();
+  //   });
+  //   expect(() => widgetBuilder, throwsA(isInstanceOf<AssertionError>()));
+  // });
 }

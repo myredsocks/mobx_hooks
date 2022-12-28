@@ -21,20 +21,18 @@ typedef AutorunFunction = void Function();
 ///   }
 /// }
 /// ```
-void useAutorun(AutorunFunction fn, [List<Object> keys]) =>
+void useAutorun(AutorunFunction fn, [List<Object>? keys]) =>
     use(_AutorunHook(fn, keys));
 
 class _AutorunHook extends Hook<void> {
-  const _AutorunHook(this.fn, [List<Object> keys])
-      : assert(fn != null, 'autorun function cannot be null'),
-        super(keys: keys);
+  const _AutorunHook(this.fn, [List<Object>? keys]) : super(keys: keys);
   final AutorunFunction fn;
   @override
   HookState<void, Hook<void>> createState() => _AutorunHookState();
 }
 
 class _AutorunHookState extends HookState<void, _AutorunHook> {
-  ReactionDisposer disposer;
+  ReactionDisposer? disposer;
 
   @override
   void build(BuildContext context) {}
@@ -52,7 +50,7 @@ class _AutorunHookState extends HookState<void, _AutorunHook> {
   @override
   void dispose() {
     if (disposer != null) {
-      disposer();
+      disposer!();
     }
   }
 
